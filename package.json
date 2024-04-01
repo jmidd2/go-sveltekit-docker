@@ -1,0 +1,10 @@
+{
+  "name": "golang-sveltekit",
+  "version": "1.0.0",
+  "description": "Monorepo for golang-sveltekit",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*", "packages/*"
+  ]
+}
