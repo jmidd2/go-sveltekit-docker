@@ -1,24 +1,14 @@
-<script  lang="ts">
+<script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import Containers from '$lib/components/Containers.svelte';
-	import { Action } from '$lib/enums';
-	import type { DockerEvent } from '$lib/types';
-	import type { PageData } from './$types';
+	import type { Container, DockerEvent } from '$lib/types';
+	import useEventSource from '$lib/useEventSource';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 
-	export let data: PageData;
+	useEventSource<DockerEvent[]>( 'http://localhost:8080/events', () => { invalidate( 'app:containers' ); } );
 
-	const error = false;
-
-	const eventSource = new EventSource( 'http://localhost:8080/events' );
-
-	eventSource.addEventListener( 'message', ( msgEvent ) => {
-		// Handle event
-		const event: DockerEvent = JSON.parse( msgEvent.data );
-		if (event.Action === Action.Remove || event.Action === Action.Create) {
-			console.log(event)
-			invalidate('app:containers')
-		}
-	} );
+	const containers = getContext<Writable<Container[]>>( 'containers' );
 </script>
 
 <svelte:head>
@@ -28,9 +18,5 @@
 
 <div>
 	<h1>Running Containers</h1>
-	{#if error}
-		<p>An error occurred while fetching users</p>
-	{:else if data.containers}
-		<Containers containers={data.containers} />
-	{/if}
+	<Containers containers={$containers} />
 </div>

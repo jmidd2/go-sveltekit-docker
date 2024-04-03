@@ -1,8 +1,14 @@
-<script>
-	import { Button } from '@golang-svelte/ui';
-	import Counter from './Counter.svelte';
+<script lang="ts">
+	import Containers from '$lib/components/Containers.svelte';
+	import Events from '$lib/components/Events.svelte';
+	import type { Container, DockerEvent } from '$lib/types';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+
+	const containers = getContext<Writable<Container[]>>('containers');
+	const events = getContext<Writable<DockerEvent[]>>('events');
 </script>
 
 <svelte:head>
@@ -18,17 +24,10 @@
 				<img src={welcome_fallback} alt="Welcome" />
 			</picture>
 		</span>
-
-		to your new<br />SvelteKit app
 	</h1>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-
-	<Button variant="secondary" size="small">Button</Button>
+	<Containers containers={$containers} />
+	<Events events={$events} />
 </section>
 
 <style>
