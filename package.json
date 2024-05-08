@@ -2,7 +2,7 @@
   "name": "golang-sveltekit",
   "version": "1.0.0",
   "description": "Monorepo for golang-sveltekit",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "private": true,
   "workspaces": [
     "apps/*", "packages/*"
